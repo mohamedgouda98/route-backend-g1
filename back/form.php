@@ -2,55 +2,47 @@
 
 if(isset($_POST['submit']))
 {
-    $deg1 = $_POST['deg1'];
-    $deg2 = $_POST['deg2'];
-    $deg3 = $_POST['deg3'];
-    $deg4 = $_POST['deg4'];
-    $deg5 = $_POST['deg5'];
 
-    $suNumbers= [];
-    $faNumbers= [];
+    $numbers = [
+        $_POST['deg1'],
+        $_POST['deg2'],
+        $_POST['deg3'],
+        $_POST['deg4'],
+        $_POST['deg5'],
+    ];
 
-    if($deg1>= 50)
+
+    function studentSuDeg($numbers)
     {
-        $suNumbers[] = $deg1;
-    }else
-    {
-        $faNumbers[] = $deg1;
+        $array = [];
+        for($i=0; $i<count($numbers); $i++)
+        {
+            if($numbers[$i] >= 50)
+            {
+                $array[] = $numbers[$i];
+            }
+        }
+
+        return $array;
+
     }
 
-    if($deg2>= 50)
+
+    function studentFaDeg($numbers)
     {
-        $suNumbers[] = $deg2;
-    }else
-    {
-        $faNumbers[] = $deg2;
+        $array = [];
+        for($i=0; $i<count($numbers); $i++)
+        {
+            if($numbers[$i] < 50)
+            {
+                $array[] = $numbers[$i];
+            }
+        }
+        return $array;
     }
 
-    if($deg3>= 50)
-    {
-        $suNumbers[] = $deg3;
-    }else
-    {
-        $faNumbers[] = $deg3;
-    }
-
-    if($deg4>= 50)
-    {
-        $suNumbers[] = $deg4;
-    }else
-    {
-        $faNumbers[] = $deg4;
-    }
-
-    if($deg5>= 50)
-    {
-        $suNumbers[] = $deg5;
-    }else
-    {
-        $faNumbers[] = $deg5;
-    }
-
+    $suNumbers= studentSuDeg($numbers);
+    $faNumbers= studentFaDeg($numbers);
 
 }
 
