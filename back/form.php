@@ -10,12 +10,19 @@ if(isset($_POST['submit']))
         ['ahmed@cloud.com',"246810"]
     ];
 
-    if(in_array($user, $data))
+
+
+    function login($data, $user)
     {
-        echo "yes";
-    }else{
-        echo "no";
+        if(in_array($user, $data))
+        {
+            return true;
+        }
+        return false;
     }
+
+
+    echo login($data, $user);
 
 
 
