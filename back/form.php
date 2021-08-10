@@ -1,29 +1,60 @@
 <?php
+//
+//class auth{
+//
+//    public $data = [
+//                ['gouda@gmail.com', "123456"],
+//                ['test@gmail.com',"12345678"],
+//                ['ahmed@cloud.com',"246810"]
+//            ];
+//
+//    public $userDataInClass;
+//
+//    public function login()
+//    {
+//       if(in_array($this->userDataInClass, $this->data))
+//       {
+//           return true;
+//       }
+//
+//    }
+//
+//
+//}
+//
+//
+//
+//if(isset($_POST['submit']))
+//{
+//    $userDataFromUser = [$_POST['email'], $_POST['password']];
+//
+//    $user = new auth();
+//    $user->userDataInClass = $userDataFromUser;
+//
+//
+//    echo $user->login();
+//}
+//
+//
 
-if(isset($_POST['submit']))
+
+class user
 {
-   $user = [$_POST['email'], $_POST['password']];
+    public $email;
+    public $password;
 
-    $data = [
-        ['gouda@gmail.com', "123456"],
-        ['test@gmail.com',"12345678"],
-        ['ahmed@cloud.com',"246810"]
-    ];
-
-
-
-    function login($data, $user)
+    public function __construct($userEmail, $userPassword)
     {
-        if(in_array($user, $data))
-        {
-            return true;
-        }
-        return false;
+        $this->email = $userEmail;
+        $this->password = $userPassword;
     }
-
-
-    echo login($data, $user);
-
-
-
 }
+
+
+$ahmed = new user("mohamed@gmail.com", "123456");
+
+var_dump($ahmed);
+
+
+
+
