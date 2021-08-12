@@ -38,23 +38,50 @@
 //
 
 
-class user
-{
-    public $email;
-    public $password;
 
-    public function __construct($userEmail, $userPassword)
+
+
+
+class car
+{
+    public $color;
+    public $size;
+
+    public function __construct($color, $size)
     {
-        $this->email = $userEmail;
-        $this->password = $userPassword;
+        $this->color = $color;
+        $this->size = $size;
     }
+
+    public function test($number, $tax)
+    {
+        return $number + $tax ;
+    }
+
+}
+
+class bmw extends car
+{
+    public $model;
+
+    public function __construct($color, $size, $model)
+    {
+        $this->model = $model;
+        parent::__construct($color, $size);
+    }
+
+    public function echoFunctionTest()
+    {
+       echo $this->color;
+    }
+
+
 }
 
 
-$ahmed = new user("mohamed@gmail.com", "123456");
-
-var_dump($ahmed);
-
+$newCar = new bmw("black", "4", "2022");
+echo $newCar->model;
+//$newCar->echoFunctionTest();
 
 
 
