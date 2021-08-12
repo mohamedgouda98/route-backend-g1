@@ -1,51 +1,84 @@
 <?php
 
-interface Auth
+
+class student
 {
-    public function login();
-}
+    private $subjectsData;
+    private $degStatus;
 
-
-class userAuth implements Auth
-{
-    private $email;
-    private $password;
-    private $userData;
-
-    private $emails = [
-        ['dev.mohamedgouda@gmail.com', '12345678'],
-        ['dev@gmail.com', '12345678'],
-        ['mohamed@gmail.com', '12345678'],
-    ];
-
-    public function __construct($email, $password)
+    public function __construct($sub1, $sub2, $sub3, $sub4, $sub5)
     {
-        $this->email = $email;
-        $this->password = $password;
-        $this->userData = [$email, $password];
+        $this->subjectsData= [$sub1, $sub2, $sub3, $sub4, $sub5];
     }
 
-    public function login(){
-        if(in_array($this->userData, $this->emails))
+    public function degStatus()
+    {
+        for($i = 0; $i < count($this->subjectsData); $i++)
         {
-            echo "Auth User";
-        }else{
-            echo "User Not Found";
+            if($this->subjectsData[$i] >= 50)
+            {
+                $status = 1;
+            }else{
+                $status = 0;
+            }
+
+            $this->degStatus[] = [$this->subjectsData[$i], $status];
+
         }
 
+        return $this->degStatus;
+    }
+
+    private function GPA()
+    {
+        $sum= 0;
+        for($i=0; $i< count($this->subjectsData); $i++)
+        {
+            $sum += $this->subjectsData[$i];
+        }
+        return $sum / count($this->subjectsData);
+    }
+
+    public function __destruct()
+    {
+        echo "<br><br> your GPA Is " . $this->GPA();
     }
 }
 
 
 
 
-
-if(isset($_POST['submit']))
+if (isset($_POST['submit']))
 {
-    $email = $_POST['email'];
-    $password = $_POST['password'];
+    $sub1 = $_POST['sub1'];
+    $sub2 = $_POST['sub2'];
+    $sub3 = $_POST['sub3'];
+    $sub4 = $_POST['sub4'];
+    $sub5 = $_POST['sub5'];
 
-    $user = new userAuth($email, $password);
-    $user->login();
-
+    $user = new student($sub1, $sub2, $sub3, $sub4, $sub5);
 }
+
+
+?>
+
+<table>
+    <tr>
+        <th>deg</th>
+        <th>status</th>
+    </tr>
+
+    <?php
+    $data = $user->degStatus();
+    foreach ($data as $value)
+    {
+    ?>
+        <tr>
+            <td><?php echo $value[0]?></td>
+            <td><?php echo $value[1]?></td>
+        </tr>
+    <?php
+    }
+    ?>
+
+</table>
