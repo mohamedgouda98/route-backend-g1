@@ -1,84 +1,34 @@
 <?php
 
+class auth{
 
-class student
-{
-    private $subjectsData;
-    private $degStatus;
+    public static $data = [
+                ['gouda@gmail.com', "123456"],
+                ['test@gmail.com',"12345678"],
+                ['ahmed@cloud.com',"246810"]
+            ];
 
-    public function __construct($sub1, $sub2, $sub3, $sub4, $sub5)
+
+
+    public static function login($userDataInClass)
     {
-        $this->subjectsData= [$sub1, $sub2, $sub3, $sub4, $sub5];
+       if(in_array($userDataInClass, self::$data))
+       {
+           return true;
+       }
+
     }
 
-    public function degStatus()
-    {
-        for($i = 0; $i < count($this->subjectsData); $i++)
-        {
-            if($this->subjectsData[$i] >= 50)
-            {
-                $status = 1;
-            }else{
-                $status = 0;
-            }
 
-            $this->degStatus[] = [$this->subjectsData[$i], $status];
-
-        }
-
-        return $this->degStatus;
-    }
-
-    private function GPA()
-    {
-        $sum= 0;
-        for($i=0; $i< count($this->subjectsData); $i++)
-        {
-            $sum += $this->subjectsData[$i];
-        }
-        return $sum / count($this->subjectsData);
-    }
-
-    public function __destruct()
-    {
-        echo "<br><br> your GPA Is " . $this->GPA();
-    }
 }
 
 
 
-
-if (isset($_POST['submit']))
+if(isset($_POST['submit']))
 {
-    $sub1 = $_POST['sub1'];
-    $sub2 = $_POST['sub2'];
-    $sub3 = $_POST['sub3'];
-    $sub4 = $_POST['sub4'];
-    $sub5 = $_POST['sub5'];
+    $userDataFromUser = [$_POST['email'], $_POST['password']];
 
-    $user = new student($sub1, $sub2, $sub3, $sub4, $sub5);
+
+
+    auth::login($userDataFromUser);
 }
-
-
-?>
-
-<table>
-    <tr>
-        <th>deg</th>
-        <th>status</th>
-    </tr>
-
-    <?php
-    $data = $user->degStatus();
-    foreach ($data as $value)
-    {
-    ?>
-        <tr>
-            <td><?php echo $value[0]?></td>
-            <td><?php echo $value[1]?></td>
-        </tr>
-    <?php
-    }
-    ?>
-
-</table>
