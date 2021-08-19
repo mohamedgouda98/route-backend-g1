@@ -1,34 +1,54 @@
 <?php
+include "dbcont.php";
 
-class auth{
+    global $cont;
 
-    public static $data = [
-                ['gouda@gmail.com', "123456"],
-                ['test@gmail.com',"12345678"],
-                ['ahmed@cloud.com',"246810"]
-            ];
+    $users = $cont->prepare("SELECT * FROM users");
+    $users->execute();
+
+    ?>
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Password</th>
+        </tr>
+
+        <?php
+
+        while($row = $users->fetchObject())
+        {
+            ?>
+            <tr>
+                <td><?php echo $row->id?></td>
+                <td><?php echo $row->name?></td>
+                <td><?php echo $row->email?></td>
+                <td><?php echo $row->password?></td>
+            </tr>
+            <?php
+
+        }
+
+        ?>
+
+    </table>
 
 
 
-    public static function login($userDataInClass)
-    {
-       if(in_array($userDataInClass, self::$data))
-       {
-           return true;
-       }
-
-    }
-
-
-}
 
 
 
-if(isset($_POST['submit']))
-{
-    $userDataFromUser = [$_POST['email'], $_POST['password']];
 
 
 
-    auth::login($userDataFromUser);
-}
+
+<?php
+
+
+
+
+
+
+
+?>
