@@ -3,47 +3,29 @@ include "dbcont.php";
 
     global $cont;
 
-    $users = $cont->prepare("SELECT * FROM users");
-    $users->execute();
+    $id = $_GET['id'];
+    echo $id;
 
-    ?>
+//
+//    $id = 3;
+//
+//    $checkUser = $cont->prepare("SELECT id FROM users WHERE id=? LIMIT 1");
+//    $checkUser->execute([$id]);
+//
+//    if($checkUser->fetch())
+//    {
+//        $deleteUser = $cont->prepare("DELETE FROM users WHERE id=? LIMIT 1");
+//        if($deleteUser->execute([$id]))
+//        {
+//            echo"user Deleted";
+//        }
+//
+//    }else
+//    {
+//        echo "user Notfound";
+//    }
+//
 
-    <table>
-        <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Password</th>
-        </tr>
-
-        <?php
-
-        while($row = $users->fetchObject())
-        {
-            ?>
-            <tr>
-                <td><?php echo $row->id?></td>
-                <td><?php echo $row->name?></td>
-                <td><?php echo $row->email?></td>
-                <td><?php echo $row->password?></td>
-            </tr>
-            <?php
-
-        }
-
-        ?>
-
-    </table>
-
-
-
-
-
-
-
-
-
-
-<?php
 
 
 
