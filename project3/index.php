@@ -1,6 +1,7 @@
 <?php
 ob_start();
 session_start();
+include "back/EmployeeController.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -284,14 +285,26 @@ session_start();
             </div>
 
             <?php
-            if(isset($_SESSION['added']))
+            if(isset($_SESSION['done']))
             {
                 ?>
                 <div class="alert alert-success" role="alert">
-                  <?php echo $_SESSION['added']?>
+                  <?php echo $_SESSION['done']?>
                 </div>
             <?php
-                unset($_SESSION['added']);
+                unset($_SESSION['done']);
+            }
+            if(isset($_SESSION['errors']))
+            {
+                foreach ($_SESSION['errors'] as $error)
+                {
+               ?>
+                    <div class="alert alert-danger" role="alert">
+                        <?php echo $error?>
+                    </div>
+            <?php
+                }
+                unset($_SESSION['errors']);
             }
             ?>
 
@@ -312,86 +325,93 @@ session_start();
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>
+                <?php
+
+                $employees = EmployeeController::getData();
+                while($row = $employees->fetch())
+                {
+                    ?>
+                    <tr>
+                        <td>
 							<span class="custom-checkbox">
 								<input type="checkbox" id="checkbox1" name="options[]" value="1">
 								<label for="checkbox1"></label>
 							</span>
-                    </td>
-                    <td>Thomas Hardy</td>
-                    <td>thomashardy@mail.com</td>
-                    <td>89 Chiaroscuro Rd, Portland, USA</td>
-                    <td>(171) 555-2222</td>
-                    <td>
-                        <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                        <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-							<span class="custom-checkbox">
-								<input type="checkbox" id="checkbox2" name="options[]" value="1">
-								<label for="checkbox2"></label>
-							</span>
-                    </td>
-                    <td>Dominique Perrier</td>
-                    <td>dominiqueperrier@mail.com</td>
-                    <td>Obere Str. 57, Berlin, Germany</td>
-                    <td>(313) 555-5735</td>
-                    <td>
-                        <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                        <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-							<span class="custom-checkbox">
-								<input type="checkbox" id="checkbox3" name="options[]" value="1">
-								<label for="checkbox3"></label>
-							</span>
-                    </td>
-                    <td>Maria Anders</td>
-                    <td>mariaanders@mail.com</td>
-                    <td>25, rue Lauriston, Paris, France</td>
-                    <td>(503) 555-9931</td>
-                    <td>
-                        <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                        <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-							<span class="custom-checkbox">
-								<input type="checkbox" id="checkbox4" name="options[]" value="1">
-								<label for="checkbox4"></label>
-							</span>
-                    </td>
-                    <td>Fran Wilson</td>
-                    <td>franwilson@mail.com</td>
-                    <td>C/ Araquil, 67, Madrid, Spain</td>
-                    <td>(204) 619-5731</td>
-                    <td>
-                        <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                        <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-							<span class="custom-checkbox">
-								<input type="checkbox" id="checkbox5" name="options[]" value="1">
-								<label for="checkbox5"></label>
-							</span>
-                    </td>
-                    <td>Martin Blank</td>
-                    <td>martinblank@mail.com</td>
-                    <td>Via Monte Bianco 34, Turin, Italy</td>
-                    <td>(480) 631-2097</td>
-                    <td>
-                        <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                        <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-                    </td>
-                </tr>
+                        </td>
+                        <td><?php echo $row['name']?></td>
+                        <td><?php echo $row['email']?></td>
+                        <td><?php echo $row['address']?></td>
+                        <td><?php echo $row['phone']?></td>
+                        <td>
+                            <a href="#editEmployeeModal<?php echo  $row['id']?>" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                            <a href="#deleteEmployeeModal<?php echo $row['id']?>" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+
+                            <div id="deleteEmployeeModal<?php echo $row['id']?>" class="modal fade">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <form method="post" action="back/EmployeeController.php">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Delete Employee</h4>
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Are you sure you want to delete these Records?</p>
+                                                <p class="text-warning"><small>This action cannot be undone.</small></p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <input type="hidden" name="id" value="<?php echo $row['id']?>">
+                                                <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                                                <input name="submitDelete" type="submit" class="btn btn-danger" value="Delete">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="editEmployeeModal<?php echo $row['id']?>" class="modal fade">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <form method="post" action="back/EmployeeController.php">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Edit Employee</h4>
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="form-group">
+                                                    <label>Name</label>
+                                                    <input type="text" name="name" value="<?php echo $row['name']?>" class="form-control" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Email</label>
+                                                    <input type="email" name="email" value="<?php echo $row['email']?>" class="form-control" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Address</label>
+                                                    <textarea class="form-control" name="address" required><?php echo $row['address']?></textarea>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Phone</label>
+                                                    <input type="text" name="phone" value="<?php echo $row['phone']?>" class="form-control" required>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                                                <input type="hidden" name="id" value="<?php echo $row['id']?>">
+                                                <input type="submit" name="submitUpdate" class="btn btn-info" value="Save">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </td>
+                    </tr>
+
+                    <?php
+                }
+                ?>
+
                 </tbody>
             </table>
             <div class="clearfix">
@@ -445,60 +465,6 @@ session_start();
     </div>
 </div>
 <!-- Edit Modal HTML -->
-<div id="editEmployeeModal" class="modal fade">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form>
-                <div class="modal-header">
-                    <h4 class="modal-title">Edit Employee</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label>Name</label>
-                        <input type="text" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Address</label>
-                        <textarea class="form-control" required></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>Phone</label>
-                        <input type="text" class="form-control" required>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                    <input type="submit" class="btn btn-info" value="Save">
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 <!-- Delete Modal HTML -->
-<div id="deleteEmployeeModal" class="modal fade">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form>
-                <div class="modal-header">
-                    <h4 class="modal-title">Delete Employee</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <p>Are you sure you want to delete these Records?</p>
-                    <p class="text-warning"><small>This action cannot be undone.</small></p>
-                </div>
-                <div class="modal-footer">
-                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                    <input type="submit" class="btn btn-danger" value="Delete">
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 </body>
 </html>
